@@ -51,7 +51,7 @@ def distance_finder(stat_1, stat_2, lin_1, lin_2):
 distance_finder('Canal St', 'Astor Pl', '4-6-6 Express', '4-6-6 Express')
                          
 
-
+#test note
 
 
 # change points to ints
