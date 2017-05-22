@@ -3,6 +3,7 @@ import pandas as pd
 import datetime
 import urllib
 
+
 # source data: https://data.cityofnewyork.us/Transportation/Subway-Stations/arq3-7z49
 # query removes all of the rows where a school did not report scores, enables later code to change score column datatypes from str to int
 query_1 = ("https://data.cityofnewyork.us/resource/kk4q-3rt2.json?")
@@ -23,9 +24,6 @@ def line_isolator(li_name):
     active_line_frame = subway_station_data_expanded_2[subway_station_data_expanded_2['line'].str.contains(li_name)]
     return active_line_frame
 
-line_name = raw_input("What line do you want to check? ")
-#print(line_isolator(line_name))  
- 
 #start of external distance calc test
 def distance(pt_1, pt_2):
     pt_1 = np.array((pt_1[0], pt_1[1]))
@@ -116,23 +114,31 @@ def closestpair(L):
     recur(L)
     return best[1]
 
-
+  
+line_name = raw_input("What line do you want to check? ")
+  
 isolated_line = line_isolator(line_name)  
 coordinates_array_prep = isolated_line['coordinates']  
 coordinates_array = []
 for x in coordinates_array_prep:
     coordinates_array.append(x)
 
-a_coord_1 = (closestpair(coordinates_array)[0])
-a_coord_2 = (closestpair(coordinates_array)[1])
+close_pair = (closestpair(coordinates_array))     
+a_coord_1 = (close_pair[0][0])
+a_coord_2 = (close_pair[1][0])
 
-station_name_1 = subway_station_data_expanded_2.loc[subway_station_data_expanded_2.coordinate_0 == a_coord_1[0], 'name']
-station_name_2 = subway_station_data_expanded_2.loc[subway_station_data_expanded_2.coordinate_0 == a_coord_2[0], 'name']
+station_name_1 = subway_station_data_expanded_2.loc[subway_station_data_expanded_2.coordinate_0 == a_coord_1, 'name']
+station_name_2 = subway_station_data_expanded_2.loc[subway_station_data_expanded_2.coordinate_0 == a_coord_2, 'name']
 
 print(station_name_1)
 print(station_name_2)
 
-print(isolated_line)
+print(closestpair(coordinates_array))
+print(closestpair(coordinates_array)[0])
+print(closestpair(coordinates_array)[0][0])
+print(closestpair(coordinates_array)[1])
+
+#print(isolated_line)
 
 # End Closest pair of points in python
   
@@ -158,11 +164,10 @@ def distance_finder(stat_1, stat_2, lin_1, lin_2):
     
     print(distance_result)
 
-distance_finder('Canal St', 'Astor Pl', '4-6-6 Express', '4-6-6 Express')
+distance_finder('Flushing Ave', 'Carroll St', 'G', 'F-G')
                          
-
-#test note
-
-
-# change points to ints
 # create column for point distance from two closest stations
+
+
+# run the program
+
