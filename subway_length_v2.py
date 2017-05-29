@@ -17,47 +17,15 @@ coordinate_dataframe_holder = subway_station_data_expanded['coordinates'].apply(
 coordinate_dataframe_holder = coordinate_dataframe_holder.rename(columns = lambda x : 'coordinate_' + str(x))
 subway_station_data_expanded_2 = pd.concat([subway_station_data_expanded[:], coordinate_dataframe_holder[:]], axis = 1)
 
-#Normalize the names of all lines so that it is just the major ones
 
-#creating a line isolator
+# Subway isolation formula
 def line_isolator(li_name):
     active_line_frame = subway_station_data_expanded_2[subway_station_data_expanded_2['line'].str.contains(li_name)]
     return active_line_frame
 
-#start of external distance calc test
-def distance(pt_1, pt_2):
-    pt_1 = np.array((pt_1[0], pt_1[1]))
-    pt_2 = np.array((pt_2[0], pt_2[1]))
-    return np.linalg.norm(pt_1-pt_2)
-
-def closest_node(node, nodes):
-    pt = []
-    dist = 9999999
-    for n in nodes:
-        if distance(node, n) <= dist:
-            dist = distance(node, n)
-            pt = n
-    return pt
-
-a = []
-for x in range(50000):
-    a.append((np.random.randint(0,1000),np.random.randint(0,1000)))
-
-some_pt = (1, 2)
-
-
-active_coord = closest_node(some_pt, subway_station_data_expanded_2['coordinates'])
-print(active_coord)
-
-station_name = subway_station_data_expanded_2.loc[subway_station_data_expanded_2.coordinate_0 == active_coord[0], 'name']
-
-print(station_name)
-
-#end of external distance calc test
   
-# Closest pair of points in python
+# Closest pair of points in python algo
 # https://www.ics.uci.edu/~eppstein/161/python/closestpair.py
-
 def closestpair(L):
     def square(x): return x*x
     def sqdist(p,q): return square(p[0]-q[0])+square(p[1]-q[1])
@@ -113,8 +81,12 @@ def closestpair(L):
     L.sort()
     recur(L)
     return best[1]
+                         
+# create column for point distance from two closest stations
+# add this here
 
-  
+# run the program
+
 line_name = raw_input("What line do you want to check? ")
   
 isolated_line = line_isolator(line_name)  
@@ -130,44 +102,14 @@ a_coord_2 = (close_pair[1][0])
 station_name_1 = subway_station_data_expanded_2.loc[subway_station_data_expanded_2.coordinate_0 == a_coord_1, 'name']
 station_name_2 = subway_station_data_expanded_2.loc[subway_station_data_expanded_2.coordinate_0 == a_coord_2, 'name']
 
-print(station_name_1)
-print(station_name_2)
-
 print(closestpair(coordinates_array))
-print(closestpair(coordinates_array)[0])
-print(closestpair(coordinates_array)[0][0])
-print(closestpair(coordinates_array)[1])
+print(station_name_1)
+print(close_pair[0])
+print(station_name_2)
+print(close_pair[1])
+
+#attempt at finding the closest coordinate for all coordinates in list
+
 
 #print(isolated_line)
-
-# End Closest pair of points in python
-  
-  
-#function that calculates the distance between any two subway stations  
-def distance_finder(stat_1, stat_2, lin_1, lin_2):    
-    subway_station_data_expanded_2_search_1 = subway_station_data_expanded_2[subway_station_data_expanded_2['line'] == lin_1]
-    stat_1_coord_1 = subway_station_data_expanded_2_search_1.loc[subway_station_data_expanded_2_search_1.name == stat_1, 'coordinate_0']
-    stat_1_coord_2 = subway_station_data_expanded_2_search_1.loc[subway_station_data_expanded_2_search_1.name == stat_1, 'coordinate_1']
-    stat_1_coord_2 = float(stat_1_coord_2)
-    stat_1_coord_1 = float(stat_1_coord_1)
-
-    
-    subway_station_data_expanded_2_search_2 = subway_station_data_expanded_2[subway_station_data_expanded_2['line'] == lin_2]
-    stat_2_coord_1 = subway_station_data_expanded_2_search_2.loc[subway_station_data_expanded_2_search_2.name == stat_2, 'coordinate_0']
-    stat_2_coord_2 = subway_station_data_expanded_2_search_2.loc[subway_station_data_expanded_2_search_2.name == stat_2, 'coordinate_1']    
-    stat_2_coord_2 = float(stat_2_coord_2)
-    stat_2_coord_1 = float(stat_2_coord_1)
-    
-    #https://docs.scipy.org/doc/numpy/reference/routines.math.html
-    #http://www.mathwarehouse.com/algebra/distance_formula/index.php
-    distance_result = np.sqrt((np.square(stat_2_coord_1 - stat_1_coord_1) + np.square(stat_2_coord_2 - stat_1_coord_2)))
-    
-    print(distance_result)
-
-distance_finder('Flushing Ave', 'Carroll St', 'G', 'F-G')
-                         
-# create column for point distance from two closest stations
-
-
-# run the program
 
